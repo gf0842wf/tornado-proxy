@@ -113,6 +113,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def connect(self):
+        # 当时ssl时会调用connect
         host, port = self.request.uri.split(':')
         client = self.request.connection.stream
 
