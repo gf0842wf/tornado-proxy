@@ -10,4 +10,4 @@
 `127.0.0.1 8888`
 
 settings配置  
-`REMOTE_HOST = "http://www.xxx.com/"`
+`REMOTE_HOST = "http://www.xxx.com:8889/"`
