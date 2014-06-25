@@ -1,31 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#
-# Simple asynchronous HTTP proxy with tunnelling (CONNECT).
-#
-# GET/POST proxying based on
-# http://groups.google.com/group/python-tornado/msg/7bea08e7a049cf26
-#
-# Copyright (C) 2012 Senko Rasic <senko.rasic@dobarkod.hr>
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+"""部署在本地"""
 
 import sys
 import socket
@@ -97,19 +73,6 @@ class ProxyHandler(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def post(self):
         return self.get()
-    
-    def write(self, chunk):
-        if self._finished:
-            raise RuntimeError("Cannot write() after finish().  May be caused "
-                               "by using async operations without the "
-                               "@asynchronous decorator.")
-        if isinstance(chunk, dict):
-            chunk = escape.json_encode(chunk)
-            self.set_header("Content-Type", "application/json; charset=UTF-8")
-        chunk = utf8(chunk)
-        # TODO:
-#         chunk = crypt(chunk)
-        self._write_buffer.append(chunk)
 
     @tornado.web.asynchronous
     def connect(self):
@@ -118,7 +81,6 @@ class ProxyHandler(tornado.web.RequestHandler):
         client = self.request.connection.stream
 
         def read_from_client(data):
-            # 加密浏览器请求数据,然后写到远端
             upstream.write(data)
 
         def read_from_upstream(data):
