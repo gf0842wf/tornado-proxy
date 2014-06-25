@@ -12,8 +12,6 @@ import tornado.iostream
 import tornado.web
 import tornado.httpclient
 
-from tornado.escape import utf8
-
 from utils import decrypt, encrypt
 from copy import deepcopy
 import settings
